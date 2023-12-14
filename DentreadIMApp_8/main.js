@@ -3,37 +3,42 @@ const path = require('node:path');
 const rimraf = require('rimraf');
 const fs = require('fs');
 const url = require('url');
-const { autoUpdater } = require("electron-updater")
-autoUpdater.autoDownload = false;
-autoUpdater.updateConfigPath = path.join(__dirname, 'update.yml');
+const { autoUpdater,AppUpdater } = require("electron-updater");
 
-autoUpdater.on('update-available', () => {
-  dialog.showMessageBox({
-    type: 'info',
-    title: 'Update Available',
-    message: 'A new version is available. Do you want to update now?',
-    buttons: ['Yes', 'No'],
-  }).then((result) => {
-    if (result.response === 0) {
-      autoUpdater.downloadUpdate();
-    }
-  }),
-  autoUpdater.on('update-downloaded', () => {
-    dialog.showMessageBox({
-      type: 'info',
-      title: 'Update Downloaded',
-      message: 'The update has been downloaded. Do you want to install it now?',
-      buttons: ['Yes', 'No'],
-    }).then((result) => {
-      if (result.response === 0) {
-        autoUpdater.quitAndInstall();
-      }
-    });
-  })
-});
+
+autoUpdater.autoDownload = false;
 
 app.on('ready', () => {
   autoUpdater.checkForUpdates();
+
+  autoUpdater.on('update-available', () => {
+    // Perform silent update without showing a dialog
+    autoUpdater.downloadUpdate();
+
+    // Optional: Listen to the 'update-downloaded' event to handle further actions
+    autoUpdater.on('update-downloaded', () => {
+      console.log('Update downloaded. Ready to install.');
+      // Quit and install the update
+      autoUpdater.quitAndInstall();
+    });
+  });
+
+  autoUpdater.on('checking-for-update', () => {
+    console.log('Checking for update...');
+  });
+
+  autoUpdater.on('update-not-available', () => {
+    console.log('Update not available.');
+  });
+
+  autoUpdater.on('error', (err) => {
+    console.error('Error in auto-updater:', err);
+  });
+
+  autoUpdater.on('download-progress', (progressObj) => {
+    console.log(Download speed: ${progressObj.bytesPerSecond});
+    console.log(Downloaded ${progressObj.percent}%);
+  });
 });
 
 let mainWindow;
