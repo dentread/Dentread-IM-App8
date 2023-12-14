@@ -1,5 +1,5 @@
 {
-  "name": "DentreadIMApp",
+  "name": "DentreadIMApp8",
   "version": "1.2.3",
   "description": "Dentread IM App",
   "main": "main.js",
@@ -24,6 +24,7 @@
       "artifactName": "${productName}-Setup.${ext}",
       "icon": "images/Favdesktop.png"
     },
+  "productName": "DentreadIMApp8",
   "author": "Dentread",
   "license": "ISC",
   "dependencies": {
