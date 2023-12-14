@@ -36,8 +36,7 @@ app.on('ready', () => {
   });
 
   autoUpdater.on('download-progress', (progressObj) => {
-    console.log(Download speed: ${progressObj.bytesPerSecond});
-    console.log(Downloaded ${progressObj.percent}%);
+
   });
 });
 
