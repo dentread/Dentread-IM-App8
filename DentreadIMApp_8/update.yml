@@ -1,4 +1,0 @@
-  provider: 'github',
-  owner: 'dentreadbhavik',
-  repo: 'Dentread-IM-App_8',
-  releaseType: draft, prerelease, or release
