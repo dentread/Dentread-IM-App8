@@ -1,0 +1,54 @@
+{
+  "name": "DentreadIMApp",
+  "version": "1.2.1",
+  "description": "Dentread IM App",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "package": "electron-builder"
+  },
+
+    "repository": "https://github.com/dentread/Dentread-IM-App8",
+    "publish": {
+      "provider": "github",
+      "releaseType": "release"
+    },
+    "build": {
+      "appId": "com.dentread.Imapp8",
+      "win": {
+        "target": "nsis"
+      },
+      "directories": {
+        "output": "DentreadBuild"
+      },
+      "artifactName": "${productName}-Setup.${ext}",
+      "icon": "images/Favdesktop.png"
+    },
+  "author": "Dentread",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.2",
+    "archiver": "^6.0.1",
+    "axios": "^1.5.0",
+    "bootstrap": "^5.3.2",
+    "dialog": "^0.3.1",
+    "electron-updater": "^6.1.4",
+    "electron-updator": "^1.0.1",
+    "form-data": "^4.0.0",
+    "got": "^13.0.0",
+    "jquery": "^3.7.1",
+    "node-fetch": "^2.6.6",
+    "rimraf": "^5.0.5"
+  },
+  "type": "commonjs",
+  "publishers": [
+    {
+      "name": "Dentread",
+      "url": "https://cloud.dentread.com"
+    }
+  ],
+  "devDependencies": {
+    "electron": "^22.3.27",
+    "electron-builder": "^24.9.1"
+  }
+}

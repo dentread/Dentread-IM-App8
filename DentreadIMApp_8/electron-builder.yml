@@ -1,0 +1,25 @@
+
+appId: com.dentread.myapp
+productName: DentreadIMApp_8
+directories:
+  output: ./DentreadBuild
+files:
+  - "**/*"
+extraResources:
+  - assets/**
+asar: true
+win:
+  target: nsis
+  icon: "images/Favdesktop.png"
+  publisherName: "Dentread"
+  artifactName: "${productName}-Setup-${version}.${ext}"
+mac:
+  target: dmg
+linux:
+  target:
+    - AppImage
+    - deb
+nsis:
+  oneClick: false
+  perMachine: true
+  allowToChangeInstallationDirectory: true
