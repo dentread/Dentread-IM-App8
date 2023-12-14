@@ -1,5 +1,5 @@
 {
-  "name": "DentreadIMApp8",
+  "name": "DentreadIMApp",
   "version": "1.2.3",
   "description": "Dentread IM App",
   "main": "main.js",
@@ -7,24 +7,23 @@
     "start": "electron .",
     "package": "electron-builder"
   },
-
-    "repository": "https://github.com/dentread/Dentread-IM-App8",
-    "publish": {
-      "provider": "github",
-      "releaseType": "release"
+  "repository": "https://github.com/dentread/Dentread-IM-App8",
+  "publish": {
+    "provider": "github",
+    "releaseType": "release"
+  },
+  "build": {
+    "appId": "com.dentread.Imapp8",
+    "win": {
+      "target": "nsis"
     },
-    "build": {
-      "appId": "com.dentread.Imapp8",
-      "win": {
-        "target": "nsis"
-      },
-      "directories": {
-        "output": "DentreadBuild"
-      },
-      "artifactName": "${productName}-Setup.${ext}",
-      "icon": "images/Favdesktop.png"
+    "directories": {
+      "output": "DentreadBuild"
     },
-  "productName": "DentreadIMApp8",
+    "artifactName": "${productName}-Setup.${ext}",
+    "icon": "images/Favdesktop.png"
+  },
+  "productName": "DentreadIMApp",
   "author": "Dentread",
   "license": "ISC",
   "dependencies": {
