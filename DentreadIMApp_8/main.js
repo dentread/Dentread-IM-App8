@@ -57,7 +57,7 @@ function createWindow() {
     // Check for updates and notify
     autoUpdater.checkForUpdatesAndNotify();
   });
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
