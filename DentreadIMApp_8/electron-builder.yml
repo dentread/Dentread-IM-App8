@@ -12,7 +12,7 @@ extraResources:
 asar: true
 win:
   target: nsis
-  icon: "images/Favdesktop.png"
+  icon: "images/LogoDentread.png"
   publisherName: "Dentread"
   artifactName: "${productName}-Setup-${version}.${ext}"
 mac:
