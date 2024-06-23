@@ -1,12 +1,14 @@
-
 appId: com.dentread.myapp8
 productName: DentreadIMApp_8
 directories:
   output: ./DentreadBuild
 files:
   - "**/*"
+  - "notification.js"
+  - "images/LogoDentread.png"
 extraResources:
   - assets/**
+  - images/**
 asar: true
 win:
   target: nsis

@@ -1,4 +1,5 @@
-
+/* In your CSS file */
+/* @import '~@fortawesome/fontawesome-free/css/all.css'; */
 
 body {
     background-color: #f8f9fa;
@@ -26,12 +27,6 @@ body {
 
 .form-group {
     margin-bottom: 20px;
-}
-
-.btn-login {
-    width: 100%;
-    padding: 10px;
-    font-size: 18px;
 }
 
 .password-container {
@@ -71,4 +66,19 @@ body {
     10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
     20%, 40%, 60%, 80% { transform: translateX(10px); }
 }
+.dentread-primary-button{
+    border: 0.5px solid #1f3f7f;
+    border-radius: 24px;
+    color: white;
+    background-color: #0076CC;
+  }
+  .dentread-primary-button:hover {
+    color: white !important;
+    background-color: #0076CC !important;
+    border-color: inherit;
+  }
+  .dentread-primary-button:active {
+    background-color: inherit;
+    border-color: #d4d0d0 !important;
+  }
 

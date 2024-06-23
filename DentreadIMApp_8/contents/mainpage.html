@@ -8,16 +8,44 @@
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/mainpage.css">
     <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-...your-integrity-hash-here..." crossorigin="anonymous" />
+    <style>
+        #headermessage {
+            position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: red;
+            animation: blinkHeader 1s linear infinite alternate;
+        }
+
+        @keyframes blinkHeader {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="main-content">
         <div class="container-fluid">
-            <div class="col-sm-12 logout-header">
-                <button class="btn settings-button ml-auto" id="settingsButton"><i class="fa fa-cog" aria-hidden="true"></i> Settings</button>
-                <button class="btn logout-button ml-auto" id="logoutbutton"><i class="fa fa-power-off mr-2" aria-hidden="true"></i> Logout</button>
+
+            <div class="form-check form-switch">
+                <!-- <h5 id="headermessage"></h5> -->
             </div>
-            <div class="col-sm-12 col-lg-12 col-xl-12 mb-4">
+            <div class="col-sm-12 d-flex align-items-center justify-content-between">
+                <div class="col-md-6 selected-sync-show">
+                    <h6><b>Sync Type:</b> <span class="userShowSync" id="userShowSync"></span></h6>
+                </div>
+                <div class="col-md-6 logout-header">
+                    <button class="btn settings-button dentread-button ml-auto" id="log"><i class="fas fa-info-circle"></i> Logs</button>
+                    <button class="btn settings-button dentread-button ml-auto" id="settingsButton"><i class="fa fa-cog" aria-hidden="true"></i> Settings</button>
+                    <button class="btn logout-button ml-auto" id="logoutbutton"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-12 col-xl-12 mb-5">
                 <div class="row row-sm  mt-lg-4">
                     <div class="col-sm-12 col-lg-12 col-xl-12">
                         <div class="card enclosing-card card-box">
@@ -40,14 +68,37 @@
                     </div>
                 </div>
             </div>
+            <div class="col-sm-12 col-lg-12 col-xl-12 pb-5 d-flex flex-wrap justify-content-between align-items-center auto-sync-action">
+                <div class="upload-status-head col-md-6">
+                    <h6 class="m-0"><b>Data Sync</b></h6>
+                </div>
+                <div class="upload-status-body col-md-6 text-end">
+                    <button class="btn dentread-button ml-auto" id="manualSyncBtn">Manual Sync</button>
+                    <button class="btn dentread-button ml-auto" id="scheduleSyncBtn">Schedule Sync</button>
+                </div>
+                <div class="upload-progress-bar col-md-12 pt-3">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" id="uploadProgressBar" role="progressbar" style="width: 0%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
+                    </div>
+                </div>
+                <div class="upload-progress-status col-md-12 pt-1 text-end">
+                    <div class="progress-status">
+                        <i class="fas fa-folder"></i>
+                        <span id="totalUploadedFile">0</span>
+                        <span class="count-devider"> / </span>
+                        <span id="totalStagedFile">0</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="syncing-workflow" id="stgToSync">
-                <div class="container-fluid">
+                <div class="container-fluid p-0">
                     <div class="row">
                       <div class="col-sm-6 mt-3">
                         <div class="staged">
                             <div class="heading-part">
-                                <h6>Files Ready To Be Synced</h6>
-                                <button type="button" class="btn button-basic-without-border" id="stageToSync"><i class="fa fa-refresh custom-margin" aria-hidden="true"></i></button>
+                                <h6>Files ready to be synced</h6>
+                                <button type="button" class="btn dentread-button ml-auto" id="stageToSync"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                             </div>
                             <div class="container text-area custom-scrollbar mt-2" id="allStagedFiles">
                             </div>
@@ -56,57 +107,260 @@
                       <div class="col-sm-6 mt-3" id="stgToSyncdentread">
                         <div class="dentreadstage">
                             <div class="heading-part extra-padding">
-                                <h6>Syncing To Dentread</h6>
+                                <h6>Syncing to Dentread</h6>
                                 <button type="button" class="d-none" disabled="true"><i class="fa fa-refresh custom-margin" aria-hidden="true"></i>Ok</button>
                             </div>
                             <div class="container text-area custom-scrollbar mt-2" id="allStagedFilesdentread">
-                              
                             </div>
                         </div>
                       </div>
                     </div>
                 </div>
+                <div >
+
                 <div class="dentreadSyncing container mt-6 d-flex justify-content-center align-items-center">
-                    <button class="syncToDentread" id="syncToDentreadId">Sync To Dentread</button>
+                    <button class="syncToDentread" id="syncToDentreadId"><i class="fas fa-cloud-upload-alt"></i> Sync to Dentread</button>
                 </div>
+                
             </div>
+            <!-- <a href="#" id="downloadLinkclient" class="primary-button">Download Log client</a> -->
+
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const storedPrefSyncOption = localStorage.getItem('prefSyncOption');
+            const prefRadioValue = localStorage.getItem('prefRadioValue');
+            const userShowSync = document.getElementById('userShowSync');
+            let actualValue = 'Manual';
+            if(storedPrefSyncOption && storedPrefSyncOption === 'scheduleSync'){
+                if (prefRadioValue && prefRadioValue === 'perpetualSchedule'){
+                    actualValue = 'Schedule (Perpetual)';
+                }else if(prefRadioValue && prefRadioValue === 'customSchedule'){
+                    actualValue = 'Schedule (Custom)';
+                }
+            }
+            userShowSync.innerText = actualValue;
+        });
+
+        function isButtonOn() {
+            const storedPrefSyncOption = localStorage.getItem('prefSyncOption');
+            const prefRadioValue = localStorage.getItem('prefRadioValue')
+            if(storedPrefSyncOption && storedPrefSyncOption === 'scheduleSync'){
+                if(prefRadioValue && prefRadioValue === 'perpetualSchedule'){
+                    return true;
+                }
+            }else{
+                return false;
+            }
+        };
+
+        function disableButton(disable) {
+            const stageButton = document.getElementById("stageToSync");
+            const suncToDtrdBtn = document.getElementById("syncToDentreadId");
+            stageButton.style.opacity = disable ? "0" : "1";
+            stageButton.style.pointerEvents = disable ? "none" : "auto";
+            suncToDtrdBtn.style.opacity = disable ? "0" : "1";
+            suncToDtrdBtn.style.pointerEvents = disable ? "none" : "auto";
+        };
+
+        function handleTheSyncState(){
+            if (isButtonOn()) {
+                disableButton(true);
+                return true;
+            
+            }
+            else{
+                disableButton(false);
+                return false;
+            }
+        };
+        function simulateButtonClick(buttonId) {
+            let selectedButton = document.getElementById(buttonId);
+            selectedButton.click();
+        }
+        function simulateButtonClickCycle() {
+
+            if (handleTheSyncState()) {
+            var stageButton = document.getElementById("stageToSync");
+            stageButton.click();
+
+            // setTimeout(function() {
+            //     var syncButton = document.getElementById("syncToDentreadId");
+            //     syncButton.click();
+
+            //     // setTimeout(simulateButtonClickCycle, 4 * 60 * 1000);
+            // }, 30 * 1000);
+        }
+    }
+        
+            document.addEventListener("DOMContentLoaded", function() {
+                
+                    simulateButtonClickCycle();
+            });
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+    function isScheduleSync() {
+    const prefRadioButton = localStorage.getItem('prefRadioValue');
+    return prefRadioButton === 'customSchedule';
+    }
+
+    if (isScheduleSync()) {
+    function getStoredTime(hostname) {
+    const dictionaryString = localStorage.getItem('hostname_time');
+    const dictionary = JSON.parse(dictionaryString);
+
+    if (dictionary && typeof dictionary === 'object') {
+        if (hostname in dictionary) {
+            console.log(dictionary[hostname])
+            return dictionary[hostname];
+        } else {
+           
+            return null;
+        }
+    } else {
+        return null;
+    }
+}
+
+    function isMatchTime(storedTime) {
+        const currentTime = new Date();
+        const storedHour = parseInt(storedTime.split(':')[0], 10);
+        const storedMinute = parseInt(storedTime.split(':')[1], 10);
+
+        console.log('currentTime',currentTime.getHours(),currentTime.getMinutes(), storedHour, storedMinute)
+
+        return currentTime.getHours() === storedHour && currentTime.getMinutes() === storedMinute;
+    }
+
+    function calculateTimeDifference(storedTime) {
+    const currentTime = new Date();
+    const storedHour = parseInt(storedTime.split(':')[0], 10);
+    const storedMinute = parseInt(storedTime.split(':')[1], 10);
+
+    const currentHour = currentTime.getHours();
+    const currentMinute = currentTime.getMinutes();
+
+    let hourDifference = storedHour - currentHour;
+    let minuteDifference = storedMinute - currentMinute;
+
+    if (hourDifference < 0) {
+        hourDifference += 24;
+    }
+
+    if (minuteDifference < 0) {
+        minuteDifference += 60;
+        hourDifference--;
+
+    return {
+        hours: hourDifference,
+        minutes: minuteDifference
+    };
+}
+    }
+
+function runLogic() {
+    var button = document.getElementById("stageToSync");
+    button.click();
+
+    // setTimeout(function() {
+    //     var button = document.getElementById("syncToDentreadId");
+    //     button.click();
+    //     // setTimeout(runLogic, 5 * 60 * 1000);
+    // }, 30 * 1000); 
+}
+
+
+    function startCheckingMatchTime() {
+        const hostname = localStorage.getItem('hostname');
+        const storedTime = getStoredTime(hostname);
+
+        if (storedTime) {
+            if (isMatchTime(storedTime)) {
+                runLogic();
+                setTimeout(stopCheckingMatchTime, 60 * 60 * 1000);
+            } else {
+                const timeDifference = calculateTimeDifference(storedTime);
+                setTimeout(startCheckingMatchTime, 60000);
+            }
+        }
+
+    }
+    startCheckingMatchTime();
+    }
+});
+async function stopCheckingMatchTime() {
+    console.log("Stopping synchronization after 60 min.");
+    await window.versions.manualbuttonfunc();
+}
+    const manualSyncBtn = document.getElementById('manualSyncBtn');
+    const scheduleSyncBtn = document.getElementById('scheduleSyncBtn');
+    manualSyncBtn.addEventListener('click', ()=>{
+        let prefSyncOption = 'manualSync';
+        if(!manualSyncBtn.classList.contains('active-button-identify')){
+            manualSyncBtn.classList.add('active-button-identify')
+        }
+        if(scheduleSyncBtn.classList.contains('active-button-identify')){
+            scheduleSyncBtn.classList.remove('active-button-identify')
+        }
+        localStorage.setItem('prefSyncOption', prefSyncOption);
+        handleTheSyncState();
+    })
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const storedPrefSyncOption = localStorage.getItem('prefSyncOption');
+        if (storedPrefSyncOption && storedPrefSyncOption === 'manualSync') {
+            manualSyncBtn.classList.add('active-button-identify');
+        };
+        if (storedPrefSyncOption && storedPrefSyncOption === 'scheduleSync'){
+            scheduleSyncBtn.classList.add('active-button-identify');
+        }
+    });
+
+    
+    </script>
+
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    function updateProgressBar() {
+        const allStagedFiles = document.getElementById('allStagedFiles');
+        const progress = document.querySelector('.progress-bar');
+        const liElements = allStagedFiles.querySelectorAll('li');
+        const totalFileCount = liElements.length;
+        // localStorage.setItem('progresscount',totalFileCount)
+        let uploadableFiles = totalFileCount;
+        let uploadedFiles = 0;
+        document.getElementById('totalStagedFile').innerText = uploadableFiles;
+        document.getElementById('totalUploadedFile').innerText = uploadedFiles;
+        document.getElementById('uploadProgressBar').style.width = `0%`;
+        document.getElementById('uploadProgressBar').innerText = `0%`;
+    }
+    updateProgressBar();
+
+    // Call updateProgressBar whenever files are updated
+    document.getElementById('stageToSync').addEventListener('click', updateProgressBar);
+    const observer = new MutationObserver(updateProgressBar);
+    const allStagedFiles = document.getElementById('allStagedFiles');
+    observer.observe(allStagedFiles, { childList: true });
+    // setInterval(updateProgressBar, 10000);
+    
+    // const observer = new MutationObserver(updateProgressBar);
+    // const allStagedFiles = localStorage.getItem(progresscount)
+    // observer.observe(allStagedFiles, { childList: true });
+
+
+});
+
+
+
+
+
+    </script>
 
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../contents/fileSelector.js"></script>
 </body>  
 </html>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Find the button with the ID "stageToSync" and store it in the variable 'button'.
-        var button = document.getElementById("stageToSync");
-
-        // Simulate a click on the first button.
-        button.click();
-
-        // Schedule the first button click after 30 seconds.
-        setTimeout(function() {
-            simulateButtonClick("syncToDentreadId", 30000);
-        }, 30000); // 30 seconds
-    });
-
-    // This function simulates a button click with a specified delay between clicks.
-    function simulateButtonClick(buttonId, delay) {
-        // Find the button with the specified ID and store it in the variable 'button'.
-        var button = document.getElementById(buttonId);
-
-        // Simulate a click on the button.
-        button.click();
-
-        // Log a message to the console indicating that the click is completed.
-        console.log(buttonId + " click completed.");
-
-        // Schedule the next click after the specified delay.
-        setTimeout(function() {
-            simulateButtonClick(buttonId === "stageToSync" ? "syncToDentreadId" : "stageToSync", buttonId === "stageToSync" ? 300000 : 30000);
-        }, delay);
-    }
-
-</script>

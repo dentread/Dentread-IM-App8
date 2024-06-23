@@ -38,11 +38,11 @@ if (localStorage.getItem('rememberMe') === 'true') {
 }
 
 loginForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
+    event.preventDefault(); 
 
     const username = usernameInput.value;
     const password = passwordInput.value;
-    const rememberMe = rememberMeCheckbox.checked;
+    const rememberMe = rememberMeCheckbox.checked; 
 
     const xhr = new XMLHttpRequest();
     xhr.open('POST', 'https://api.dentread.com/authenticate_desktop/');
@@ -55,17 +55,19 @@ loginForm.addEventListener('submit', async (event) => {
                 const token = xhr.response.token;
                 const user_name = xhr.response.name;
                 const orgname = xhr.response.orgname;
-
                 const func = async () => {
                     const response = await window.versions.createDirectory(username);
                     if (response.success) {
-                        const dentread_dir = response.directoryPath;
+                        const dentread_dir = response.directoryPath; 
+                        
+    
+                        return dentread_dir; 
                     } else {
                         console.error('Directory creation failed:', response.message);
                         return null;
                     }
                 };
-
+    
                 const dentread_dir = func();
 
                 localStorage.setItem('token', JSON.stringify(token));
@@ -82,6 +84,7 @@ loginForm.addEventListener('submit', async (event) => {
                     localStorage.removeItem('savedPassword');
                 }
 
+
                 window.location.href = 'mainpage.html';
             } else {
                 doSomething('Authentication failed');
@@ -96,5 +99,9 @@ loginForm.addEventListener('submit', async (event) => {
     };
 
     const formData = `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+
     xhr.send(formData);
 });
+
+
+

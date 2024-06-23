@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Dentread IM App - logs</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/settings.css">
+    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.css">
+    <link rel="stylesheet" href="../assets/mainpage.css">
+  </head>
+  <body>
+    <div class="container-fluid mt-2">
+        <div class="log-action-section d-flex justify-content-between align-items-center">
+            <a href="#" id="refreshlog" class="dentread-button p-2"><i class="fas fa-redo-alt"></i> Refresh Logs</a>
+            <a href="#" id="downloadLink" download="log.txt" class="dentread-button p-2"><i class="fas fa-download"></i> Download Logs</a>
+        </div>
+        <div class="container-fluid mt-2">
+            <!-- Log table -->
+            <table class="table table-bordered">
+                <thead>
+
+                </thead>
+                <tbody id="logContainer">
+                </tbody>
+            </table>
+        </div>
+    
+
+    </div>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../contents/log.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+<style>.primary-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; /* Primary color */
+    color: #fff; /* Text color */
+    text-decoration: none; /* Remove underline */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease;
+}
+
+.primary-button:hover {
+    background-color: #0056b3; /* Darker shade of primary color on hover */
+}
+    /* Remove underline */
+    #refreshlog {
+        text-decoration: none;
+    }
+
+    /* Remove color */
+    #refreshlog {
+        color: inherit;
+    }
+
+    /* Optionally, you can specify a specific color */
+    #refreshlog {
+        color: black; /* Change "black" to the desired color */
+    }
+</style>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 {
   "name": "DentreadIMApp",
-  "version": "1.2.3",
+  "version": "1.4.3",
   "description": "Dentread IM App",
   "main": "main.js",
   "scripts": {
@@ -11,6 +11,11 @@
   "publish": {
     "provider": "github",
     "releaseType": "release"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": true,
+    "allowToChangeInstallationDirectory": true
   },
   "build": {
     "appId": "com.dentread.Imapp8",
@@ -34,9 +39,14 @@
     "dialog": "^0.3.1",
     "electron-updater": "^6.1.4",
     "form-data": "^4.0.0",
+    "electron-notification": "^1.0.0",
+    "electron-squirrel-startup": "^1.0.0",
+    "electron-store": "^8.2.0",
     "got": "^13.0.0",
     "jquery": "^3.7.1",
     "node-fetch": "^2.6.6",
+    "node-cron": "^3.0.3",
+    "node-notifier": "^10.0.1",
     "rimraf": "^5.0.5"
   },
   "type": "commonjs",
